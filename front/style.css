@@ -1,0 +1,16 @@
+#graphBox {
+    display: flex;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    justify-content: center;
+}
+
+svg {
+    margin-top: 40px;
+    /* text-align: center; */
+}
+
+
+g {
+    background-color: aquamarine;
+}
