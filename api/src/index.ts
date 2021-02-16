@@ -10,11 +10,11 @@ app.use(cors());
 
 app.get('/' , (request: Request, response: Response) => {
     console.log("Hello");
-    const svg = fs.readFileSync("ressources/graphs/x.svg").toString();
-    svg.slice(svg.search("s"));
-    console.log(svg);
-    
-    
+    var svg = fs.readFileSync("ressources/graphs/x.svg").toString();
+    var width = svg.slice()
+    svg = svg.slice(svg.search("<svg"));
+
+
     const obj = { chaine: svg };
 
     response.status(200).json(obj).end();
