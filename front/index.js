@@ -2,13 +2,38 @@ function makeNodesClickable() {
     nodes = Array.from(document.getElementsByClassName("node"));
     nodes.forEach((node) => {
         node.onclick = () => {
-            const title = node.childNodes[1].textContent
-            console.log(title);
+            openNav(node);
         }
-
-        
     });
 }
+
+function openNav(node) {
+    const title = node.childNodes[1].textContent;
+    const nav = document.getElementById("sidePane");
+    nav.children[0].textContent = title;
+    nav.style.width = "160px";
+    document.getElementById("graphBox").style.marginRight = "160px";
+    
+}
+
+function closeNav(node) {
+    const nav = document.getElementById("sidePane");
+    nav.style.width = "0"
+    document.getElementById("graphBox").style.marginRight = "0px";
+}
+
+
+document.getElementById("graphBox").onclick = (e) => {
+    var target = e.target;
+    while (target != document) {
+        if (target.classList.contains("node")) {
+            return;
+        }
+        target = target.parentNode;
+    }
+
+    closeNav();
+};
 
 var req = new XMLHttpRequest();
 req.open("GET", "http://localhost:3000/");
