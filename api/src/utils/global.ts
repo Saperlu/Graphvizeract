@@ -1,27 +1,17 @@
+import { execSync } from "child_process";
 import { Request, Response } from "express";
-import { parse, Graph, OutputCallback, graph } from "graphviz";
+import fs from "fs";
 
 
-export const getGraph = ():string => {
+// TODO
+// export const getGraph = (): string => {
+//     return 
+//     graph;
+// }
 
-    var gra: Graph;
-    return "aaa";
-}
-
-export const getSvgFromGraph = (graph: Graph):string | undefined => {
-    var retour: string | undefined;
-    graph.render("svg", (data) => {
-        data = data.toString();
-        data = data.slice(data.search("<svg"));
-        retour = data
-        return data;
-    }, () => {
-        console.log("CA MARCHE PAS");
-        retour = undefined;
-        return undefined;
-    });
-
-    return retour;
-
-
+export const getSvg = (): string => {
+    const code = execSync("dot -Tsvg -oressources/graphs/graph.svg ressources/graphs/graph.gv")
+    var svg = fs.readFileSync("ressources/graphs/graph.svg").toString();
+    svg = svg.slice(svg.search("<svg"));
+    return svg;
 }
