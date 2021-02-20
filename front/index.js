@@ -1,8 +1,34 @@
-function makeNodesClickable() {
+var selectedNode;
+
+function selectNode(node) {
+    unselectNode();
+    selectedNode = node;
+    selectedNode.getElementsByTagName("ellipse")[0]
+        .style.fill = "red";
+}
+
+function unselectNode() {
+    if (selectedNode) {
+        selectedNode.getElementsByTagName("ellipse")[0].
+            style.fill = "#FEDCFA";
+    }
+}
+
+function setupNodes() {
     nodes = Array.from(document.getElementsByClassName("node"));
     nodes.forEach((node) => {
         node.onclick = () => {
+            selectNode(node);
             openNav(node);
+        }
+
+        node.oncontextmenu = () => {
+            if (selectedNode && selectedNode != node) {
+                nodeTitle = node.getElementsByTagName("title")[0].textContent;
+                selectedNodeTitle = selectedNode.getElementsByTagName("title")[0].textContent;
+                console.log(selectedNodeTitle + ' --> ' + nodeTitle);
+            }
+            return false;
         }
     });
 }
@@ -20,7 +46,11 @@ function closeNav(node) {
     const nav = document.getElementById("sidePane");
     nav.style.width = "0"
     document.getElementById("graphBox").style.marginRight = "0px";
+    unselectNode();
 }
+
+
+
 
 
 document.getElementById("graphBox").onclick = (e) => {
@@ -45,6 +75,6 @@ req.onreadystatechange = () => {
         // const graph = document.createElement("div");
         graphBox.innerHTML =  JSON.parse(req.responseText).chaine;
         // graphBox.appendChild(graph);
-        makeNodesClickable();
+        setupNodes();
     }
 }
