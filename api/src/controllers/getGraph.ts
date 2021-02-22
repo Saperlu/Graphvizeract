@@ -3,7 +3,6 @@ import { getSvg } from "../utils/global";
 
 
 export default (request: Request, response: Response) => {
-    console.log("Hello");
     const svg = getSvg();
 
     if (svg) {

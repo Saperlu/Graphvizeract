@@ -5,7 +5,35 @@ digraph mainmap {
 		style = filled
 		fillcolor = "#FEDCFA"
 	]
+//START nodes
+	"Master 1"
+	"Fillage 1"
+	"72"
+	"27"
+	"14"
+	"55"
+	"34"
+	"50"
+	"29"
+	"90"
+	"53"
+	"67"
+	"60"
+	"11"
+	"73"
+	"83"
+	"77"
+	"30"
+	"34"
+	"5"
+	"95"
+	"22"
+	"69"
+	"84"
+	"35"
+//END nodes
 
+//edges
 
 	"Master 1" -> "Fillage 1"
 	

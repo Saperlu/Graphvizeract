@@ -1,5 +1,22 @@
 var selectedNode;
 
+function getGraph() {
+    var req = new XMLHttpRequest();
+    req.open("GET", "http://localhost:3000/");
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4) {
+            const graphBox = document.getElementById("graphBox");
+            if (graphBox.firstChild) graphBox.removeChild(graphBox.firstChild);
+            // const graph = document.createElement("div");
+            graphBox.innerHTML =  JSON.parse(req.responseText).chaine;
+            // graphBox.appendChild(graph);
+            setupNodes();
+        }
+    }
+}
+
+
 function selectNode(node) {
     unselectNode();
     selectedNode = node;
@@ -61,20 +78,23 @@ document.getElementById("graphBox").onclick = (e) => {
         }
         target = target.parentNode;
     }
-
     closeNav();
 };
 
-var req = new XMLHttpRequest();
-req.open("GET", "http://localhost:3000/");
-req.send();
-req.onreadystatechange = () => {
-    if (req.readyState === 4) {
-        const graphBox = document.getElementById("graphBox");
-        if (graphBox.firstChild) graphBox.removeChild(graphBox.firstChild);
-        // const graph = document.createElement("div");
-        graphBox.innerHTML =  JSON.parse(req.responseText).chaine;
-        // graphBox.appendChild(graph);
-        setupNodes();
+document.getElementById("addButton").onclick = (e) => {
+    var req = new XMLHttpRequest();
+    var nodeName = Math.random() * 100;
+    nodeName = nodeName.toFixed(0).toString();
+    
+    req.open("POST", `http://localhost:3000/addNode/${nodeName}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status == 201) {
+            getGraph()
+        }
     }
 }
+
+getGraph();
+
+
