@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import fs from "fs";
-import { getGraph, getPathToGv } from "../utils/global";
+import { loadGraph, saveGraph } from "../utils/global";
 
 
 
@@ -10,15 +10,21 @@ export default (request: Request, response: Response) => {
     
     // console.log(nodeName);
     //Aller à //END nodes
-    var graph = getGraph();
+    var graph = loadGraph();
     const insertIndex = graph.search('//END nodes');
    
+    const startNodeIndex = graph.search("//START node");
+    const endNodeIndex = graph.search("//END node");
+    var nodeId: number|RegExpMatchArray|null;
+    nodeId = graph.substring(startNodeIndex, endNodeIndex).match(/\n/g);
+    if (nodeId)
+         nodeId = nodeId.length;
+    
     // Insérer
-    graph = graph.slice(0, insertIndex) + '\t"' + nodeName + '"\n' + graph.slice(insertIndex);
+    graph = graph.slice(0, insertIndex) + `\t${nodeId} [label="${nodeName}",];\n` + graph.slice(insertIndex);
     
     // Sauvegarder
-    fs.writeFileSync(getPathToGv(), graph);
-
+    saveGraph(graph);
 
     return response.status(201).end();
     

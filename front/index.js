@@ -22,12 +22,27 @@ function selectNode(node) {
     selectedNode = node;
     selectedNode.getElementsByTagName("ellipse")[0]
         .style.fill = "red";
+    const removeNodeButton = document.getElementById("removeNodeButton");
+    removeNodeButton.onclick = removeNode.bind(removeNodeButton, node);
 }
 
 function unselectNode() {
     if (selectedNode) {
         selectedNode.getElementsByTagName("ellipse")[0].
             style.fill = "#FEDCFA";
+    }
+}
+
+function removeNode(node) {
+    var req = new XMLHttpRequest();
+    const nodeId = node.id.slice(4);
+
+    req.open("DELETE", `http://localhost:3000/node/${nodeId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4) {
+            getGraph()
+        }
     }
 }
 
@@ -41,9 +56,9 @@ function setupNodes() {
 
         node.oncontextmenu = () => {
             if (selectedNode && selectedNode != node) {
-                nodeTitle = node.getElementsByTagName("title")[0].textContent;
-                selectedNodeTitle = selectedNode.getElementsByTagName("title")[0].textContent;
-                console.log(selectedNodeTitle + ' --> ' + nodeTitle);
+                nodeName = getNodeName(node);
+                selectedNodeName = getNodeName(selectedNode);
+                console.log(selectedNodeName + ' --> ' + nodeName);
             }
             return false;
         }
@@ -51,9 +66,9 @@ function setupNodes() {
 }
 
 function openNav(node) {
-    const title = node.childNodes[1].textContent;
+    const nodeName = getNodeName(node)
     const nav = document.getElementById("sidePane");
-    nav.children[0].textContent = title;
+    nav.children[0].textContent = nodeName;
     nav.style.width = "160px";
     document.getElementById("graphBox").style.marginRight = "160px";
     
@@ -66,7 +81,10 @@ function closeNav(node) {
     unselectNode();
 }
 
-
+function getNodeName(node) {
+    const nodeName = node.getElementsByTagName("text")[0].textContent;
+    return nodeName;
+}
 
 
 
@@ -85,7 +103,7 @@ document.getElementById("addButton").onclick = (e) => {
     var req = new XMLHttpRequest();
     var nodeName = Math.random() * 100;
     nodeName = nodeName.toFixed(0).toString();
-    
+
     req.open("POST", `http://localhost:3000/addNode/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
