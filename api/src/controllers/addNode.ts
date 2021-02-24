@@ -21,7 +21,7 @@ export default (request: Request, response: Response) => {
          nodeId = nodeId.length;
     
     // Insérer
-    graph = graph.slice(0, insertIndex) + `\t${nodeId} [label="${nodeName}",];\n` + graph.slice(insertIndex);
+    graph = graph.slice(0, insertIndex) + `\t${nodeId} [label="${nodeName}",];//node\n` + graph.slice(insertIndex);
     
     // Sauvegarder
     saveGraph(graph);

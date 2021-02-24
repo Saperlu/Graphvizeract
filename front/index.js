@@ -46,6 +46,30 @@ function removeNode(node) {
     }
 }
 
+function addEdge(node) {
+    console.log(node);
+    if (selectedNode && selectedNode != node) {
+        nodeName = getNodeName(node);
+        selectedNodeName = getNodeName(selectedNode);
+        console.log(selectedNodeName + ' --> ' + nodeName);
+
+
+
+        nodeId = getNodeId(node);
+        selectedNodeId = getNodeId(selectedNode);
+        req = new XMLHttpRequest;
+        req.open("POST", `http://localhost:3000/edge/${selectedNodeId}/${nodeId}`);
+        console.log(`http://localhost:3000/edge/${selectedNodeId}/${nodeId}`);
+        req.send();
+        req.onreadystatechange = () => {
+            if (req.readyState === 4) {
+                getGraph()
+            }
+        }
+    }
+    return false;
+}
+
 function setupNodes() {
     nodes = Array.from(document.getElementsByClassName("node"));
     nodes.forEach((node) => {
@@ -54,14 +78,7 @@ function setupNodes() {
             openNav(node);
         }
 
-        node.oncontextmenu = () => {
-            if (selectedNode && selectedNode != node) {
-                nodeName = getNodeName(node);
-                selectedNodeName = getNodeName(selectedNode);
-                console.log(selectedNodeName + ' --> ' + nodeName);
-            }
-            return false;
-        }
+        node.oncontextmenu = addEdge.bind(node, node)
     });
 }
 
@@ -84,6 +101,10 @@ function closeNav(node) {
 function getNodeName(node) {
     const nodeName = node.getElementsByTagName("text")[0].textContent;
     return nodeName;
+}
+
+function getNodeId(node) {
+    return node.id.slice(4);
 }
 
 
