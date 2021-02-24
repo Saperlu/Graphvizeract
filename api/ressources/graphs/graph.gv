@@ -1,0 +1,22 @@
+/* x.gv */
+digraph mainmap {
+	node [
+		shape = circle
+		style = filled
+		fillcolor = "#FEDCFA"
+	]
+//START nodes
+	1 [label="76",];//node
+	2 [label="44",];//node
+	3 [label="41",];//node
+	4 [label="68",]//node
+//END nodes
+
+//START edges
+	1->2;//edge
+	2->1;//edge
+	3->2;//edge
+//END edges
+
+
+}
