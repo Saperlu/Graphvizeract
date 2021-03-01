@@ -26,7 +26,7 @@ function selectNode(node) {
     unselectNode();
     selectedNode = node;
     selectedNode.getElementsByTagName("ellipse")[0]
-        .style.fill = "red";
+        .style.fill = "#DD7CC6";
     const removeNodeButton = document.getElementById("removeNodeButton");
     removeNodeButton.onclick = removeNode.bind(removeNodeButton, node);
 }
@@ -85,6 +85,8 @@ function addNode() {
 }
 
 function removeNode(node) {
+    unselectNode();
+
     var req = new XMLHttpRequest();
     const nodeId = node.id.slice(4);
 
@@ -119,7 +121,7 @@ function addEdge(node) {
 
         nodeId = getNodeId(node);
         selectedNodeId = getNodeId(selectedNode);
-        
+
         req = new XMLHttpRequest;
         req.open("POST", `http://localhost:3000/edge/${selectedNodeId}/${nodeId}`);
         req.send();

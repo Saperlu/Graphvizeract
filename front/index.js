@@ -25,7 +25,6 @@ document.onkeypress = (e) => {
     
     if (selectedNode && (e.key === "d")) { // KEY: d ===> Remove selectedNode
         removeNode(selectedNode);
-        unselectNode();
     } else if (e.key === "a") { // KEY: a  ===> Add node
         addNode();
     }
