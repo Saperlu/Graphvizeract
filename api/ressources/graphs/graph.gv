@@ -1,9 +1,12 @@
 /* x.gv */
 digraph mainmap {
 	node [
-		shape = circle
+		shape = "Mrecord"
 		style = filled
 		fillcolor = "#FEDCFA"
+		labelloc = "t"
+		splines = true
+		overlap = false
 	]
 //START nodes
 	1 [label="76",];//node

@@ -25,7 +25,7 @@ function getGraph() {
 function selectNode(node) {
     unselectNode();
     selectedNode = node;
-    selectedNode.getElementsByTagName("ellipse")[0]
+    selectedNode.getElementsByTagName("path")[0]
         .style.fill = "#DD7CC6";
     const removeNodeButton = document.getElementById("removeNodeButton");
     removeNodeButton.onclick = removeNode.bind(removeNodeButton, node);
@@ -33,7 +33,7 @@ function selectNode(node) {
 
 function unselectNode() {
     if (selectedNode) {
-        selectedNode.getElementsByTagName("ellipse")[0].
+        selectedNode.getElementsByTagName("path")[0].
             style.fill = "#FEDCFA";
         selectedNode = undefined;
     }
