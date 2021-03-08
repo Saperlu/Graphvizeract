@@ -1,19 +1,12 @@
-
-import { json } from "express";
 import { readFileSync } from "fs";
 import { Auth, drive_v3, google } from "googleapis";
 
 var jwtClient: Auth.JWT;
 var drive: drive_v3.Drive;
+const videractFolderId = "1VXFQN7a4vOR2mydNMS4m1PQxyC1sAGzw";
 
 export const authenticate = async () => {
     const { apiAccount } = JSON.parse(readFileSync("credentials.json").toString());
-    
-    // const jwtClient = {
-    //     email: apiAccount.client_email,
-    //     key: apiAccount.private_key,
-    //     scope: "https://www.googleapis.com/auth/drive",
-    // } as Auth.JWT;
 
     jwtClient = new Auth.JWT(
         apiAccount.client_email,
@@ -22,26 +15,41 @@ export const authenticate = async () => {
         ["https://www.googleapis.com/auth/drive"]
     )
 
-
-    // await jwtClient.authorize()
-
     jwtClient.authorize((err, tokens) => {
         if (err) {
             console.log(err);
             return;
         } else {
-            console.log("Success");
+            console.log("Connected to drive");
         }
     });
 
     drive = google.drive({ version: "v3", auth: jwtClient});
 };
 
-export const deleteAll = () => {
 
-    
+
+export const addDoc = async (name: string) => {
+    const file = await drive.files.create({
+        requestBody: {
+            name: name,
+            mimeType: "application/vnd.google-apps.document",
+            parents: [
+                "1VXFQN7a4vOR2mydNMS4m1PQxyC1sAGzw"
+            ]
+        }
+    });
+    return file.data.id;
+};
+
+export const deleteAll = () => { 
     drive.files.list({
-        pageSize: 10,
+        q: "mimeType='application/vnd.google-apps.folder'",
+        includeItemsFromAllDrives: true,
+        supportsAllDrives: true,
+        corpora: "drive",
+        driveId: videractFolderId,
+        pageSize: 30,
         fields: 'nextPageToken, files(id, name)',
     }, (err, res) => {
         if (err) {
@@ -61,3 +69,11 @@ export const deleteAll = () => {
         return files;
     });
 };
+// export const generateNewDocId = async ():Promise<string | undefined> => {
+//     const response = await drive.files.generateIds({
+//         count: 1,
+//     });
+//     if (response && response.data && response.data.ids) {
+//         return response.data.ids[0]
+//     }
+// };

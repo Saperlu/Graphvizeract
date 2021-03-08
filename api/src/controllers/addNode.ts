@@ -1,31 +1,19 @@
 import { Request, Response } from "express";
 import fs from "fs";
+import { addDoc, generateNewDocId } from "../utils/drive";
 import { loadGraph, saveGraph } from "../utils/global";
 
 
 
-export default (request: Request, response: Response) => {
-    //Construire chaine
+export default async (request: Request, response: Response) => {
     const nodeName = request.params.nodeName;
-    
-    // console.log(nodeName);
-    //Aller à //END nodes
-    var graph = loadGraph();
-    const insertIndex = graph.search('//END nodes');
-   
-    const startNodeIndex = graph.search("//START node");
-    const endNodeIndex = graph.search("//END node");
-    var nodeId: number|RegExpMatchArray|null;
-    nodeId = graph.substring(startNodeIndex, endNodeIndex).match(/\n/g);
-    if (nodeId)
-         nodeId = nodeId.length;
-    
-    // Insérer
-    graph = graph.slice(0, insertIndex) + `\t${nodeId} [label="${nodeName}",];//node\n` + graph.slice(insertIndex);
+    const nodeId = await addDoc(nodeName);
+
+    var graph = loadGraph();    
+    graph = graph.replace('//END nodes', `\t"${nodeId}" [label="${nodeName}",];//node\n//END nodes`)
     
     // Sauvegarder
     saveGraph(graph);
-
     return response.status(201).end();
     
 }
