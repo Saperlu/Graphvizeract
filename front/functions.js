@@ -93,7 +93,7 @@ function removeNode(node) {
     unselectNode();
 
     var req = new XMLHttpRequest();
-    const nodeId = node.id.slice(4);
+    const nodeId = getNodeId(node);
 
     req.open("DELETE", `http://localhost:3000/node/${nodeId}`);
     req.send();

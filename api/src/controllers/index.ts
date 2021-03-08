@@ -2,7 +2,7 @@ import  { Router } from "express";
 import addEdge from "./addEdge";
 import addNode from "./addNode";
 import debug from "./debug";
-import deleteNode from "./deleteNode";
+import deleteNode from "./removeNode";
 import getGraph from "./getGraph";
 import removeEdge from "./removeEdge";
 

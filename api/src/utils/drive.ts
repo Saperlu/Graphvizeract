@@ -42,6 +42,14 @@ export const addDoc = async (name: string) => {
     return file.data.id;
 };
 
+export const removeDoc = async (id: string) => {
+    drive.files.delete({
+        fileId: id
+    });
+}
+
+
+
 export const deleteAll = () => { 
     drive.files.list({
         q: "mimeType='application/vnd.google-apps.folder'",
