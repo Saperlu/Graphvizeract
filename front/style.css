@@ -60,3 +60,16 @@ svg {
 g {
     background-color: aquamarine;
 }
+
+#docButton {
+    height: 24px;
+    width: 24px;
+    border-radius: 5px;
+    padding: 0;
+}
+
+#docButton > img {
+    height: 20px;
+    width: 20px;
+    border-radius: 5px;
+}

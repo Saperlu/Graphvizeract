@@ -25,7 +25,7 @@ function getGraph() {
 function selectNode(node) {
     unselectNode();
     selectedNode = node;
-    selectedNode.getElementsByTagName("ellipse")[0]
+    selectedNode.getElementsByTagName("path")[0]
         .style.fill = "#DD7CC6";
     const removeNodeButton = document.getElementById("removeNodeButton");
     removeNodeButton.onclick = removeNode.bind(removeNodeButton, node);
@@ -33,7 +33,7 @@ function selectNode(node) {
 
 function unselectNode() {
     if (selectedNode) {
-        selectedNode.getElementsByTagName("ellipse")[0].
+        selectedNode.getElementsByTagName("path")[0].
             style.fill = "#FEDCFA";
         selectedNode = undefined;
     }
@@ -45,8 +45,13 @@ function unselectNode() {
 function openNav(node) {
     const nodeName = getNodeName(node)
     const nav = document.getElementById("sidePane");
-    nav.children[0].textContent = nodeName;
-    nav.style.width = "160px";
+    nav.children[0].textContent = nodeName; // Set title of pane to nodeName
+
+    const nodeId = getNodeId(node);
+    const linkToDoc = `https://docs.google.com/document/d/${nodeId}/edit?usp=sharing`;
+    document.getElementById("docLink").href = linkToDoc;
+
+    nav.style.width = "160px"; // Opens the pane
     document.getElementById("graphBox").style.marginRight = "160px";
     
 }
@@ -67,7 +72,7 @@ function getNodeName(node) {
 }
 
 function getNodeId(node) {
-    return node.id.slice(4);
+    return node.getElementsByTagName("title")[0].textContent;
 }
 
 function addNode() {
@@ -88,9 +93,23 @@ function removeNode(node) {
     unselectNode();
 
     var req = new XMLHttpRequest();
-    const nodeId = node.id.slice(4);
-
+    const nodeId = getNodeId(node);
+    
     req.open("DELETE", `http://localhost:3000/node/${nodeId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4) {
+            getGraph()
+        }
+    }
+}
+
+function renameNode() {
+    const nodeName = prompt("Entrez le nouveau nom du noeud sélectionné.", "Un joli nom");
+    const nodeId = getNodeId(selectedNode);
+    
+    var req = new XMLHttpRequest();
+    req.open("POST", `http://localhost:3000/node/name/${nodeId}/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
@@ -137,8 +156,8 @@ function addEdge(node) {
 function removeEdge(edge) {
     title = edge.getElementsByTagName("title")[0].textContent;
     console.log(title);
-    startEdge = title.replace(/->\d/, "");
-    endEdge = title.replace(/\d->/, "");
+    startEdge = title.replace(/->.*/, "");
+    endEdge = title.replace(/.*->/, "");
     
     req = new XMLHttpRequest;
         req.open("DELETE", `http://localhost:3000/edge/${startEdge}/${endEdge}`);

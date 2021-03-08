@@ -7,7 +7,7 @@ export default (request: Request, response: Response) => {
     const startEdge = request.params.startEdge;
     const endEdge = request.params.endEdge;
 
-    const regex = new RegExp(`\t${startEdge}->${endEdge}.*//edge\n`);
+    const regex = new RegExp(`\t\"${startEdge}\"->\"${endEdge}\".*;//edge\n`);
     graph = graph.replace(regex, "")
     
     saveGraph(graph);
