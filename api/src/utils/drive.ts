@@ -48,6 +48,15 @@ export const removeDoc = async (id: string) => {
     });
 }
 
+export const renameDoc = async (id: string, name: string) => {
+    await drive.files.update({
+        fileId: id,
+        requestBody: {
+            name: name,
+        }
+    });
+}
+
 
 
 export const deleteAll = () => { 

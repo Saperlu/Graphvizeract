@@ -94,8 +94,22 @@ function removeNode(node) {
 
     var req = new XMLHttpRequest();
     const nodeId = getNodeId(node);
-
+    
     req.open("DELETE", `http://localhost:3000/node/${nodeId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4) {
+            getGraph()
+        }
+    }
+}
+
+function renameNode() {
+    const nodeName = prompt("Entrez le nouveau nom du noeud sélectionné.", "Un joli nom");
+    const nodeId = getNodeId(selectedNode);
+    
+    var req = new XMLHttpRequest();
+    req.open("POST", `http://localhost:3000/node/name/${nodeId}/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
