@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import fs from "fs";
-import { addDoc, generateNewDocId } from "../utils/drive";
+import { addDoc } from "../utils/drive";
 import { loadGraph, saveGraph } from "../utils/global";
 
 

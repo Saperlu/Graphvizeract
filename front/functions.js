@@ -47,7 +47,7 @@ function openNav(node) {
     const nav = document.getElementById("sidePane");
     nav.children[0].textContent = nodeName; // Set title of pane to nodeName
 
-    const nodeId = getNodeIdv2(node);
+    const nodeId = getNodeId(node);
     const linkToDoc = `https://docs.google.com/document/d/${nodeId}/edit?usp=sharing`;
     document.getElementById("docLink").href = linkToDoc;
 
@@ -72,10 +72,6 @@ function getNodeName(node) {
 }
 
 function getNodeId(node) {
-    return node.id.slice(4);
-}
-
-function getNodeIdv2(node) {
     return node.getElementsByTagName("title")[0].textContent;
 }
 
