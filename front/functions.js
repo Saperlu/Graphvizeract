@@ -142,8 +142,8 @@ function addEdge(node) {
 function removeEdge(edge) {
     title = edge.getElementsByTagName("title")[0].textContent;
     console.log(title);
-    startEdge = title.replace(/->\d/, "");
-    endEdge = title.replace(/\d->/, "");
+    startEdge = title.replace(/->.*/, "");
+    endEdge = title.replace(/.*->/, "");
     
     req = new XMLHttpRequest;
         req.open("DELETE", `http://localhost:3000/edge/${startEdge}/${endEdge}`);
