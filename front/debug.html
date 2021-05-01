@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width" initial-scale="1.0">
     <title>Debug Graph</title>
 </head>
 <body>
 <script>
 function submit() {
-    url=document.getElementById("url").textContent;
+    url=document.getElementById("url").value;
     var req = new XMLHttpRequest();
     req.open("GET", url);
+    console.log(url);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
-            console.log(req.status);
+            console.log(req);
         }
     }
 }
@@ -23,11 +24,11 @@ function submit() {
 </script>
 
 
-    <form">
+
         <label for="url">url</label>
-        <input id="url" name=url type="text">
+        <input id="url" name="url" type="text">
 
         <input type="submit" value="ok" onclick="submit()">
-    </form>
+
 </body>
 </html>

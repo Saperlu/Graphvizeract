@@ -1,6 +1,6 @@
 function getGraph() {
     var req = new XMLHttpRequest();
-    req.open("GET", "http://dev-isi.utt.fr:3000");
+    req.open("GET", "http://dev-isi.utt.fr/~charleul:3000");
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
