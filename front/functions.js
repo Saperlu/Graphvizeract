@@ -107,15 +107,19 @@ function removeNode(node) {
 }
 
 function renameNode() {
-    const nodeName = prompt("Entrez le nouveau nom du noeud sélectionné.", "Un joli nom");
-    const nodeId = getNodeId(selectedNode);
-    
-    var req = new XMLHttpRequest();
-    req.open("POST", `${API_URL}/node/name/${nodeId}/${nodeName}`);
-    req.send();
-    req.onreadystatechange = () => {
-        if (req.readyState === 4) {
-            getGraph()
+    const nodeName = prompt("Entrez le nouveau nom du noeud sélectionné.", getNodeName(selectedNode));
+    if (nodeName) {
+        
+        const nodeId = getNodeId(selectedNode);
+        
+        var req = new XMLHttpRequest();
+        req.open("POST", `${API_URL}/node/name/${nodeId}`);
+        req.setRequestHeader("Content-type", "text/plain");
+        req.send(nodeName);
+        req.onreadystatechange = () => {
+            if (req.readyState === 4) {
+                getGraph();
+            }
         }
     }
 }
