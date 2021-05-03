@@ -16,7 +16,7 @@ const routes = (): Router => {
     router.get("//", getGraph);
     router.post("/addNode/:nodeName", addNode);
     router.delete("/node/:nodeId", deleteNode);
-    router.post("/node/name/:nodeId/:nodeName", renameNode)
+    router.post("/node/name/:nodeId", renameNode);
     router.post("/edge/:startEdge/:endEdge", addEdge);
     router.delete("/edge/:startEdge/:endEdge", removeEdge)
 
