@@ -1,6 +1,8 @@
+const API_URL = "http://dev-isi.utt.fr:3005";
+
 function getGraph() {
     var req = new XMLHttpRequest();
-    req.open("GET", "http://dev-isi.utt.fr/~charleul:3000");
+    req.open("GET", API_URL);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
@@ -80,7 +82,7 @@ function addNode() {
     var nodeName = Math.random() * 100;
     nodeName = nodeName.toFixed(0).toString();
 
-    req.open("POST", `http://localhost:3000/addNode/${nodeName}`);
+    req.open("POST", `${API_URL}/addNode/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4 && req.status == 201) {
@@ -95,7 +97,7 @@ function removeNode(node) {
     var req = new XMLHttpRequest();
     const nodeId = getNodeId(node);
     
-    req.open("DELETE", `http://localhost:3000/node/${nodeId}`);
+    req.open("DELETE", `${API_URL}/node/${nodeId}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
@@ -109,7 +111,7 @@ function renameNode() {
     const nodeId = getNodeId(selectedNode);
     
     var req = new XMLHttpRequest();
-    req.open("POST", `http://localhost:3000/node/name/${nodeId}/${nodeName}`);
+    req.open("POST", `${API_URL}/node/name/${nodeId}/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
@@ -142,7 +144,7 @@ function addEdge(node) {
         selectedNodeId = getNodeId(selectedNode);
 
         req = new XMLHttpRequest;
-        req.open("POST", `http://localhost:3000/edge/${selectedNodeId}/${nodeId}`);
+        req.open("POST", `${API_URL}/edge/${selectedNodeId}/${nodeId}`);
         req.send();
         req.onreadystatechange = () => {
             if (req.readyState === 4) {
@@ -160,7 +162,7 @@ function removeEdge(edge) {
     endEdge = title.replace(/.*->/, "");
     
     req = new XMLHttpRequest;
-        req.open("DELETE", `http://localhost:3000/edge/${startEdge}/${endEdge}`);
+        req.open("DELETE", `${API_URL}/edge/${startEdge}/${endEdge}`);
         req.send();
         req.onreadystatechange = () => {
             if (req.readyState === 4) {
