@@ -7,3 +7,7 @@ api/ressources/.DS_Store
 api/credentials.json
 
 api/yarn-error.log
+
+api/.DS_Store
+
+.DS_Store
