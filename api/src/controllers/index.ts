@@ -6,23 +6,47 @@ import deleteNode from "./removeNode";
 import getGraph from "./getGraph";
 import removeEdge from "./removeEdge";
 import renameNode from "./renameNode";
+import getGraphList from "./getGraphList";
+import addGraph from "./addGraph";
+import removeGraph from "./removeGraph";
+import renameGraph from "./renameGraph";
+import moveGraphLeft from "./moveGraphLeft";
+import moveGraphRight from "./moveGraphRight";
 
 
 
+
+const graphRoutes = (): Router => {
+    const router = Router();
+
+    // Middlewares
+    
+    return router;
+};
 
 const routes = (): Router => {
     const router = Router();
+    
+    router.get("//", getGraphList);
+    router.post("//", addGraph);
 
-    router.get("//", getGraph);
-    router.post("/addNode/:nodeName", addNode);
-    router.delete("/node/:nodeId", deleteNode);
-    router.post("/node/name/:nodeId", renameNode);
-    router.post("/edge/:startEdge/:endEdge", addEdge);
-    router.delete("/edge/:startEdge/:endEdge", removeEdge)
-
+    
+    
+    router.get("/graph/:graphId", getGraph);
+    router.post("/graph/:graphId/move/left", moveGraphLeft);
+    router.post("/graph/:graphId/move/right", moveGraphRight);
+    router.post("/graph/:graphId/rename", renameGraph);
+    router.delete("/graph/:graphId", removeGraph);
+    router.post("/graph/:graphId/addNode/:nodeName", addNode);
+    router.delete("/graph/:graphId/node/:nodeId", deleteNode);
+    router.post("/graph/:graphId/node/name/:nodeId", renameNode);
+    router.post("/graph/:graphId/edge/:startEdge/:endEdge", addEdge);
+    router.delete("/graph/:graphId/edge/:startEdge/:endEdge", removeEdge)
+    
     router.get("/debug", debug);
 
+
     return router;
-};
+}
 
 export default routes;

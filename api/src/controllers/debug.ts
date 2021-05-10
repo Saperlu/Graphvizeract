@@ -4,6 +4,7 @@ import { deleteAll } from "../utils/drive";
 
 
 export default (request: Request, response: Response) => {
-    const obj = deleteAll();
-    return response.status(200).json(obj).end()
+    // const obj = deleteAll();
+    // return response.status(200).json(obj).end()
+    return response.end();
 }

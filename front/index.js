@@ -1,12 +1,17 @@
 var selectedNode;
+var selectedGraph = undefined;
 
 // Removes right click menu
 document.oncontextmenu = () => {
     return false;
 }
 
+document.getElementById("addGraphButton").onclick = addGraph;
+
+
+
 // addNode button
-document.getElementById("addButton").onclick = addNode;
+// document.getElementById("addButton").onclick = addNode;
 
 // unselect Node
 document.getElementById("graphBox").onclick = (e) => {
@@ -23,16 +28,26 @@ document.getElementById("graphBox").onclick = (e) => {
 document.onkeypress = (e) => {
 
     
-    if (selectedNode && (e.key === "d")) { // KEY: d ===> Remove selectedNode
+    if (selectedGraph && selectedNode && (e.key === "d")) { // KEY: d ===> Remove selectedNode
         removeNode(selectedNode);
-    } else if (selectedNode && e.key === "r") {
+    } else if (selectedGraph && selectedNode && e.key === "r") {
         renameNode()
-    } else if (e.key === "a") { // KEY: a  ===> Add node
+    } else if (selectedGraph && e.key === "a") { // KEY: a  ===> Add node
         addNode();
+    } else if (e.key === "A") { // KEY: A  ===> Add graph
+        addGraph();
+    } else if (selectedGraph && e.key === "D") { // KEY: D  ===> Delete graph
+        deleteGraph(selectedGraph.id);
+    } else if (selectedGraph && e.key === "R") { // KEY: R  ===> Rename graph
+        renameGraph();
+    } else if (selectedGraph && e.key === "q") { // KEY: <--  ===> Move graph left
+        moveGraphLeft();
+    } else if (selectedGraph && e.key === "m") { // KEY: -->  ===> Move graph right
+        moveGraphRight();
     }
 }
 
-// render the graph
-getGraph();
+// Get the graph list, then render a graph
+getGraphList();
 
 
