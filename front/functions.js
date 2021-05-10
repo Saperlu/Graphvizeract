@@ -43,7 +43,7 @@ function getGraph() {
 }
 
 function addGraph() {
-    const graphId = prompt("Entrez le nouveau nom du noeud sélectionné.", "Nouveau Graph");
+    const graphId = prompt("Entrez le nouveau nom du graph sélectionné.", "Nouveau Graph");
     if (graphId) {
         var req = new XMLHttpRequest();
         req.open("POST", `${API_URL}`);
@@ -58,7 +58,7 @@ function addGraph() {
 }
 
 function deleteGraph(graphId) {
-    if (confirm("Etes-vous sûr de voulir supprimer le noeud ?")) {   
+    if (confirm("Etes-vous sûr de vouoir supprimer l graph ?")) {   
         var req = new XMLHttpRequest();
         req.open("DELETE", `${API_URL}/graph/${graphId}`);
         req.send();
@@ -237,7 +237,7 @@ function addNode() {
 }
 
 function removeNode(node) {  
-    if (confirm("Etes-vous sûr de voulir supprimer le noeud ?")) {   
+    if (confirm("Etes-vous sûr de vouoir supprimer le noeud ?")) {   
         unselectNode();
         
         var req = new XMLHttpRequest();
