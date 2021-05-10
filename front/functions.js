@@ -58,15 +58,17 @@ function addGraph() {
 }
 
 function deleteGraph(graphId) {
-    var req = new XMLHttpRequest();
-    req.open("DELETE", `${API_URL}/graph/${graphId}`);
-    req.send();
-    req.onreadystatechange = () => {
-        if (req.readyState === 4 && req.status === 202) {
-            getGraphList();
-            var graphBox = document.getElementById('graphBox');
-            while (graphBox.lastChild) {
-                graphBox.removeChild(graphBox.lastChild);
+    if (confirm("Etes-vous sûr de voulir supprimer le noeud ?")) {   
+        var req = new XMLHttpRequest();
+        req.open("DELETE", `${API_URL}/graph/${graphId}`);
+        req.send();
+        req.onreadystatechange = () => {
+            if (req.readyState === 4 && req.status === 202) {
+                getGraphList();
+                var graphBox = document.getElementById('graphBox');
+                while (graphBox.lastChild) {
+                    graphBox.removeChild(graphBox.lastChild);
+                }
             }
         }
     }
@@ -235,16 +237,18 @@ function addNode() {
 }
 
 function removeNode(node) {  
-    unselectNode();
-    
-    var req = new XMLHttpRequest();
-    const nodeId = getNodeId(node);
-    
-    req.open("DELETE", `${API_URL}/graph/${selectedGraph.id}/node/${nodeId}`);
-    req.send();
-    req.onreadystatechange = () => {
-        if (req.readyState === 4) {
-            getGraph()
+    if (confirm("Etes-vous sûr de voulir supprimer le noeud ?")) {   
+        unselectNode();
+        
+        var req = new XMLHttpRequest();
+        const nodeId = getNodeId(node);
+        
+        req.open("DELETE", `${API_URL}/graph/${selectedGraph.id}/node/${nodeId}`);
+        req.send();
+        req.onreadystatechange = () => {
+            if (req.readyState === 4) {
+                getGraph()
+            }
         }
     }
 }
