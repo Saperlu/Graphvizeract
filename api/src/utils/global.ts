@@ -1,26 +1,56 @@
 import { execSync } from "child_process";
-import { Request, Response } from "express";
 import fs from "fs";
+import { customAlphabet } from "nanoid";
+import { GraphItem } from "../interfaces";
 
+export const loadGraphList = (): GraphItem[] => {
+    const graphList = JSON.parse(fs.readFileSync("ressources/graphList.json").toString());
+    return graphList;
+}
 
-export const loadGraph = (): string => {
-    var graph = fs.readFileSync("ressources/graphs/graph.gv").toString();
+export const saveGraphList = (graphList: Object): void => {
+    JSON.parse(fs.readFileSync("ressources/graphList.json").toString());
+    fs.writeFileSync("ressources/graphList.json", JSON.stringify(graphList));
+}
+
+export const loadGraph = (graphId: string): string => {
+    var graph = fs.readFileSync(getPathToGv(graphId)).toString();
     return graph;
 }
 
-export const saveGraph = (graph: string) => {
-    fs.writeFileSync(getPathToGv(), graph);
+export const saveGraph = (graph: string, graphId: string) => {
+    fs.writeFileSync(getPathToGv(graphId), graph);
 }
 
-export const getSvg = (): string => {
-    const code = execSync("dot -Tsvg -oressources/graphs/graph.svg ressources/graphs/graph.gv")
-    var svg = fs.readFileSync("ressources/graphs/graph.svg").toString();
+export const getSvg = (graphId: string): string => {
+    const code = execSync(`dot -Tsvg -oressources/graphs/${graphId}.svg ressources/graphs/${graphId}.gv`);
+    var svg = fs.readFileSync(`ressources/graphs/${graphId}.svg`).toString();
     svg = svg.slice(svg.search("<svg"));
     return svg;
 }
 
-export const getPathToGv = () => {
-    return "ressources/graphs/graph.gv";
+export const getPathToGv = (graphId: string) => {
+    return `ressources/graphs/${graphId}.gv`;
+}
+
+export const getPathToSvg = (graphId: string) => {
+    return `ressources/graphs/${graphId}.svg`;
+}
+
+export const getPathToExample = () => {
+    return `ressources/example.gv`;
+}
+
+export const createGraphId = ():string => {
+    const nanoid = customAlphabet("azertyuiopqsdfghjklmwxcvbn0987654321", 10);
+    return nanoid();
+}
+
+export const isGraphIdCorrect = (graphId: string):boolean => {
+    if (graphId.match(/^[a-z0-9]{10}$/)) {
+        return true;
+    }
+    return false;
 }
 
 

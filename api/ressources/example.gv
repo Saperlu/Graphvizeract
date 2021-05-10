@@ -9,11 +9,8 @@ digraph mainmap {
 		overlap = false
 	]
 //START nodes
-	"16uUX9WwjDItuVR1tn8s1Fx8JuGEEFDnxGFmFsxF-NQo" [label="29",];//node
 //END nodes
 
 //START edges
 //END edges
-
-
 }

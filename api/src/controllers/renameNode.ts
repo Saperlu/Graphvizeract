@@ -1,18 +1,20 @@
 import { Request, Response, text } from "express";
+import isGraphIdCorrect from "../middlewares/isGraphIdCorrect";
 import { renameDoc } from "../utils/drive";
 import { loadGraph, saveGraph } from "../utils/global";
 
 
 export default [
     // Middlewares
+    ...isGraphIdCorrect,
     text(),
     
     // Controler
     (request: Request, response: Response) => {
-        const nodeId = request.params.nodeId;
+        const { nodeId, graphId } = request.params;
         const nodeName = request.body;
-        var graph = loadGraph();
-
+        var graph = loadGraph(graphId);
+        
 
         const nodeLineRegex = new RegExp(`\t\"${nodeId}\" .*//node`);
         var nodeLineMatch = graph.match(nodeLineRegex);
@@ -26,7 +28,7 @@ export default [
 
         graph = graph.replace(nodeLineRegex, nodeLine);
         
-        saveGraph(graph);
+        saveGraph(graph, graphId);
 
         renameDoc(nodeId, nodeName);
         response.status(201).end();

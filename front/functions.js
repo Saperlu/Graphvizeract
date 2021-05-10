@@ -1,11 +1,33 @@
 const API_URL = "http://dev-isi.utt.fr:3005";
 
-function getGraph() {
+//-------------------------------
+// Graph
+
+function getGraphList() {
     var req = new XMLHttpRequest();
     req.open("GET", API_URL);
     req.send();
     req.onreadystatechange = () => {
-        if (req.readyState === 4) {
+        if (req.readyState === 4 && req.status === 200) {
+            const graphList = JSON.parse(req.response);
+            updateGraphList(graphList);
+        }
+    }
+}
+
+function cleanGraphMenu() {
+    graphMenu = document.getElementById("graphMenu");
+    while (graphMenu.childElementCount > 1) {
+        graphMenu.removeChild(graphMenu.firstChild);
+    }
+}
+
+function getGraph() {
+    var req = new XMLHttpRequest();
+    req.open("GET", `${API_URL}/graph/${selectedGraph.id}/`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status == 200) {
             const graphBox = document.getElementById("graphBox");
             if (graphBox.firstChild) graphBox.removeChild(graphBox.firstChild);
             graphBox.innerHTML =  JSON.parse(req.responseText).chaine;
@@ -20,6 +42,127 @@ function getGraph() {
     }
 }
 
+function addGraph() {
+    const graphId = prompt("Entrez le nouveau nom du noeud sélectionné.", "Nouveau Graph");
+    if (graphId) {
+        var req = new XMLHttpRequest();
+        req.open("POST", `${API_URL}`);
+        req.setRequestHeader("Content-type", "text/plain");
+        req.send(graphId);
+        req.onreadystatechange = () => {
+            if (req.readyState === 4 && req.status === 201) {
+                getGraphList();
+            }
+        }
+    }
+}
+
+function deleteGraph(graphId) {
+    var req = new XMLHttpRequest();
+    req.open("DELETE", `${API_URL}/graph/${graphId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status === 202) {
+            getGraphList();
+            var graphBox = document.getElementById('graphBox');
+            while (graphBox.lastChild) {
+                graphBox.removeChild(graphBox.lastChild);
+            }
+        }
+    }
+}
+
+function renameGraph() {
+    const graphName = prompt("Entrez le nouveau nom du graph sélectionné.", selectedGraph.label);
+    if (graphName) {
+        
+        
+        var req = new XMLHttpRequest();
+        req.open("POST", `${API_URL}/graph/${selectedGraph.id}/rename`);
+        req.setRequestHeader("Content-type", "text/plain");
+        req.send(graphName);
+        req.onreadystatechange = () => {
+            if (req.readyState === 4 && req.status === 201) {
+                getGraphList();
+                getGraph();
+            }
+        }
+    }
+}
+
+function moveGraphLeft() {
+    var req = new XMLHttpRequest();
+    req.open("POST", `${API_URL}/graph/${selectedGraph.id}/move/left`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status === 201) {
+            const graphList = JSON.parse(req.response);
+            updateGraphList(graphList);
+        }
+    }
+}
+
+function moveGraphRight() {
+    var req = new XMLHttpRequest();
+    req.open("POST", `${API_URL}/graph/${selectedGraph.id}/move/right`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status === 201) {
+            const graphList = JSON.parse(req.response);
+            updateGraphList(graphList);
+        }
+    }
+}
+
+function selectGraph(div) {
+    unselectGraph();
+    div.className = "menuItem selected";
+    selectedGraph = {
+        id: div.id,
+        label: div.textContent,
+        div
+    };
+    console.log(selectedGraph);
+    
+}
+
+function unselectGraph() {
+    if (selectedGraph) {
+        selectedGraph.div.className = "menuItem";
+        selectedGraph = undefined;
+    }
+}
+
+function setupGraph(div) {
+    div.onclick = () => {
+        selectGraph(div);
+        getGraph();
+    }
+    div.oncontextmenu = () => {
+        deleteGraph(div.id);
+    }
+}
+
+function updateGraphList(graphList) {
+    var graphMenu = document.getElementById("graphMenu");
+    cleanGraphMenu();
+    graphList.forEach(graphItem => {
+        var div = document.createElement("div");
+        if (selectedGraph && selectedGraph.id === graphItem.id) {
+            div.className = "menuItem selected";
+            selectedGraph.div = div;
+        } else {
+            div.className = "menuItem";
+        }
+        div.textContent = graphItem.label;
+        div.id = graphItem.id;
+
+        setupGraph(div);
+
+        // Insert each element after the previous one but before the + button
+        graphMenu.insertBefore(div, graphMenu.children[graphMenu.children.length - 1]);                
+    }); 
+}
 
 //-------------------------------
 // node selection
@@ -82,7 +225,7 @@ function addNode() {
     var nodeName = Math.random() * 100;
     nodeName = nodeName.toFixed(0).toString();
 
-    req.open("POST", `${API_URL}/addNode/${nodeName}`);
+    req.open("POST", `${API_URL}/graph/${selectedGraph.id}/addNode/${nodeName}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4 && req.status == 201) {
@@ -91,13 +234,13 @@ function addNode() {
     }
 }
 
-function removeNode(node) {
+function removeNode(node) {  
     unselectNode();
-
+    
     var req = new XMLHttpRequest();
     const nodeId = getNodeId(node);
     
-    req.open("DELETE", `${API_URL}/node/${nodeId}`);
+    req.open("DELETE", `${API_URL}/graph/${selectedGraph.id}/node/${nodeId}`);
     req.send();
     req.onreadystatechange = () => {
         if (req.readyState === 4) {
@@ -113,7 +256,7 @@ function renameNode() {
         const nodeId = getNodeId(selectedNode);
         
         var req = new XMLHttpRequest();
-        req.open("POST", `${API_URL}/node/name/${nodeId}`);
+        req.open("POST", `${API_URL}/graph/${selectedGraph.id}/node/name/${nodeId}`);
         req.setRequestHeader("Content-type", "text/plain");
         req.send(nodeName);
         req.onreadystatechange = () => {
@@ -148,7 +291,7 @@ function addEdge(node) {
         selectedNodeId = getNodeId(selectedNode);
 
         req = new XMLHttpRequest;
-        req.open("POST", `${API_URL}/edge/${selectedNodeId}/${nodeId}`);
+        req.open("POST", `${API_URL}/graph/${selectedGraph.id}/edge/${selectedNodeId}/${nodeId}`);
         req.send();
         req.onreadystatechange = () => {
             if (req.readyState === 4) {
@@ -166,7 +309,7 @@ function removeEdge(edge) {
     endEdge = title.replace(/.*->/, "");
     
     req = new XMLHttpRequest;
-        req.open("DELETE", `${API_URL}/edge/${startEdge}/${endEdge}`);
+        req.open("DELETE", `${API_URL}/graph/${selectedGraph.id}/edge/${startEdge}/${endEdge}`);
         req.send();
         req.onreadystatechange = () => {
             if (req.readyState === 4) {
