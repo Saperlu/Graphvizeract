@@ -195,7 +195,7 @@ function openNav(node) {
     nav.children[0].textContent = nodeName; // Set title of pane to nodeName
 
     const nodeId = getNodeId(node);
-    const linkToDoc = `https://docs.google.com/document/d/${nodeId}/edit?usp=sharing`;
+    const linkToDoc = getGDocLink(node);
     document.getElementById("docLink").href = linkToDoc;
 
     nav.style.width = "160px"; // Opens the pane
@@ -329,4 +329,14 @@ function setupEdges() {
         edge.oncontextmenu = removeEdge.bind(edge, edge);
         return false;
     });
+}
+
+
+// Others
+function openGDoc() {
+    window.open(getGDocLink(selectedNode), '_blank');
+}
+
+function getGDocLink(node) {
+    return `https://docs.google.com/document/d/${getNodeId(node)}/edit?usp=sharing`;
 }

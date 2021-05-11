@@ -34,6 +34,8 @@ document.onkeypress = (e) => {
         renameNode()
     } else if (selectedGraph && e.key === "a") { // KEY: a  ===> Add node
         addNode();
+    } else if (selectedGraph && selectedNode && e.key === "g") { // KEY: a  ===> Add node
+        openGDoc();
     } else if (e.key === "A") { // KEY: A  ===> Add graph
         addGraph();
     } else if (selectedGraph && e.key === "D") { // KEY: D  ===> Delete graph
