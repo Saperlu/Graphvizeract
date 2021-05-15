@@ -122,6 +122,7 @@ function selectGraph(div) {
     selectedGraph = {
         id: div.id,
         label: div.textContent,
+        prefix: div.textContent[0],
         div
     };
     console.log(selectedGraph);
