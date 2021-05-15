@@ -173,16 +173,19 @@ function updateGraphList(graphList) {
 function selectNode(node) {
     unselectNode();
     selectedNode = node;
+    isSelectedNodeGreen = (selectedNode.getElementsByTagName("path")[0]
+        .attributes["fill"].value==="lightgreen") ? true : false;
     selectedNode.getElementsByTagName("path")[0]
-        .style.fill = "#DD7CC6";
+        .style.fill = isSelectedNodeGreen ? "green" : "#DD7CC6";
     const removeNodeButton = document.getElementById("removeNodeButton");
     removeNodeButton.onclick = removeNode.bind(removeNodeButton, node);
 }
 
 function unselectNode() {
     if (selectedNode) {
+
         selectedNode.getElementsByTagName("path")[0].
-            style.fill = "#FEDCFA";
+            style.fill = isSelectedNodeGreen ? "lightgreen" : "#FEDCFA";
         selectedNode = undefined;
     }
 }
@@ -268,6 +271,19 @@ function renameNode() {
             if (req.readyState === 4) {
                 getGraph();
             }
+        }
+    }
+}
+
+function changeColor() {
+    const nodeId = getNodeId(selectedNode);
+    
+    var req = new XMLHttpRequest();
+    req.open("POST", `${API_URL}/graph/${selectedGraph.id}/node/changeColor/${nodeId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status === 201) {
+            getGraph();
         }
     }
 }

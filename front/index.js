@@ -1,4 +1,5 @@
 var selectedNode;
+var isSelectedNodeGreen;
 var selectedGraph = undefined;
 
 // Removes right click menu
@@ -36,6 +37,8 @@ document.onkeypress = (e) => {
         addNode();
     } else if (selectedGraph && selectedNode && e.key === "g") { // KEY: a  ===> Add node
         openGDoc();
+    } else if (selectedGraph && selectedNode && e.key === "v") { // KEY: v ===> Change color
+        changeColor();
     } else if (e.key === "A") { // KEY: A  ===> Add graph
         addGraph();
     } else if (selectedGraph && e.key === "D") { // KEY: D  ===> Delete graph
