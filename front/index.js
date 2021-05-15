@@ -46,7 +46,7 @@ document.onkeypress = (e) => {
         moveGraphLeft();
     } else if (selectedGraph && e.key === "m") { // KEY: -->  ===> Move graph right
         moveGraphRight();
-    } else if (selectedGraph && selectedNode && e.key === "p") { // KEY: p ===> Copy formated name in clipboard
+    } else if (selectedGraph && selectedNode && e.key === "c") { // KEY: p ===> Copy formated name in clipboard
         copyNodeFileName();
     }
 }

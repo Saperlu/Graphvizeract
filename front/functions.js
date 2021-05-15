@@ -387,5 +387,5 @@ function formatNodeToFileName() {
     alphabet.forEach((elem) => {
         chaine = chaine.replace(elem.regex, elem.betterSymbol);
     });
-    navigator.clipboard.writeText(chaine);
+    prompt("Nom formaté : ", chaine);
 }
