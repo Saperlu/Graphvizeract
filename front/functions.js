@@ -343,6 +343,7 @@ function getGDocLink(node) {
 
 function copyNodeFileName() {
     var chaine = "p" + selectedGraph.prefix + "n_" + formatNodeToFileName();
+    prompt("Nom formaté : ", chaine);
 }
 
 const alphabet = [
@@ -387,5 +388,5 @@ function formatNodeToFileName() {
     alphabet.forEach((elem) => {
         chaine = chaine.replace(elem.regex, elem.betterSymbol);
     });
-    prompt("Nom formaté : ", chaine);
+    return chaine;
 }
