@@ -340,3 +340,52 @@ function openGDoc() {
 function getGDocLink(node) {
     return `https://docs.google.com/document/d/${getNodeId(node)}/edit?usp=sharing`;
 }
+
+function copyNodeFileName() {
+    var chaine = "p" + selectedGraph.prefix + "n_" + formatNodeToFileName();
+}
+
+const alphabet = [
+    {
+        "regex": new RegExp("é","g"),
+        "betterSymbol": "e"
+    },
+    {
+        "regex": new RegExp("è","g"),
+        "betterSymbol": "e"
+    },
+    {
+        "regex": new RegExp("à","g"),
+        "betterSymbol": "a"
+    },
+    {
+        "regex": new RegExp("ç","g"),
+        "betterSymbol": "c"
+    },
+    {
+        "regex": new RegExp("\\?","g"),
+        "betterSymbol": ""
+    },
+    {
+        "regex": new RegExp("\\.","g"),
+        "betterSymbol": ""
+    },
+    {
+        "regex": new RegExp("!","g"),
+        "betterSymbol": ""
+    },
+    {
+        "regex": new RegExp(" ","g"),
+        "betterSymbol": "-"
+    }
+];
+    
+
+function formatNodeToFileName() {
+    var chaine = getNodeName(selectedNode);
+    chaine = chaine.toLowerCase();
+    alphabet.forEach((elem) => {
+        chaine = chaine.replace(elem.regex, elem.betterSymbol);
+    });
+    navigator.clipboard.writeText(chaine);
+}
