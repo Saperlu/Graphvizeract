@@ -394,7 +394,7 @@ const alphabet = [
     },
     {
         "regex": new RegExp(" ","g"),
-        "betterSymbol": "-"
+        "betterSymbol": "_"
     }
 ];
     
