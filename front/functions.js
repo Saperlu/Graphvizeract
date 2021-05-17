@@ -365,11 +365,7 @@ function copyNodeFileName() {
 
 const alphabet = [
     {
-        "regex": new RegExp("é","g"),
-        "betterSymbol": "e"
-    },
-    {
-        "regex": new RegExp("è","g"),
+        "regex": new RegExp("[éè]","g"),
         "betterSymbol": "e"
     },
     {
@@ -381,19 +377,11 @@ const alphabet = [
         "betterSymbol": "c"
     },
     {
-        "regex": new RegExp("\\?","g"),
+        "regex": new RegExp("[\?\.!,]","g"),
         "betterSymbol": ""
     },
     {
-        "regex": new RegExp("\\.","g"),
-        "betterSymbol": ""
-    },
-    {
-        "regex": new RegExp("!","g"),
-        "betterSymbol": ""
-    },
-    {
-        "regex": new RegExp(" ","g"),
+        "regex": new RegExp("[ ']","g"),
         "betterSymbol": "_"
     }
 ];
