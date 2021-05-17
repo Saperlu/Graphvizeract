@@ -288,6 +288,19 @@ function changeColor() {
     }
 }
 
+function changeColorContour() {
+    const nodeId = getNodeId(selectedNode);
+    
+    var req = new XMLHttpRequest();
+    req.open("POST", `${API_URL}/graph/${selectedGraph.id}/node/changeColorContour/${nodeId}`);
+    req.send();
+    req.onreadystatechange = () => {
+        if (req.readyState === 4 && req.status === 201) {
+            getGraph();
+        }
+    }
+}
+
 function setupNodes() {
     nodes = Array.from(document.getElementsByClassName("node"));
     nodes.forEach((node) => {

@@ -39,6 +39,8 @@ document.onkeypress = (e) => {
         openGDoc();
     } else if (selectedGraph && selectedNode && e.key === "v") { // KEY: v ===> Change color
         changeColor();
+    } else if (selectedGraph && selectedNode && e.key === "V") { // KEY: V ===> Change color contour
+        changeColorContour();
     } else if (e.key === "A") { // KEY: A  ===> Add graph
         addGraph();
     } else if (selectedGraph && e.key === "D") { // KEY: D  ===> Delete graph

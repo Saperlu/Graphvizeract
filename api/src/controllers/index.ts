@@ -13,6 +13,7 @@ import renameGraph from "./renameGraph";
 import moveGraphLeft from "./moveGraphLeft";
 import moveGraphRight from "./moveGraphRight";
 import changeColorNode from "./changeColorNode";
+import changeColorNodeContour from "./changeColorNodeContour";
 
 
 
@@ -42,6 +43,7 @@ const routes = (): Router => {
     router.delete("/graph/:graphId/node/:nodeId", deleteNode);
     router.post("/graph/:graphId/node/name/:nodeId", renameNode);
     router.post("/graph/:graphId/node/changeColor/:nodeId", changeColorNode);
+    router.post("/graph/:graphId/node/changeColorContour/:nodeId", changeColorNodeContour);
     router.post("/graph/:graphId/edge/:startEdge/:endEdge", addEdge);
     router.delete("/graph/:graphId/edge/:startEdge/:endEdge", removeEdge)
     

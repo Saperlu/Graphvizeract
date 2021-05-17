@@ -20,15 +20,15 @@ export default [
             nodeLine = nodeLineMatch[0];
         }
 
-        var regex = new RegExp(`fillcolor="lightgreen"`);
-        if (nodeLine.match(regex)) { // Make node purple
-            nodeLine = nodeLine.replace(regex, 'fillcolor="#FEDCFA"');
-        } else { // Make node lightgreen
-            regex = new RegExp(`fillcolor="#FEDCFA"`);
+        var regex = new RegExp(`color="black"`);
+        if (nodeLine.match(regex)) { // Make node contour white
+            nodeLine = nodeLine.replace(regex, 'color="white"');
+        } else { // Make node contour black
+            regex = new RegExp(`color="white"`);
             if (nodeLine.match(regex)) { // replace color
-                nodeLine = nodeLine.replace(regex, 'fillcolor="lightgreen"');
+                nodeLine = nodeLine.replace(regex, 'color="black"');
             } else { // Put a new color tag
-                nodeLine = nodeLine.replace("label=", 'fillcolor="lightgreen", label=');
+                nodeLine = nodeLine.replace(",]", ', color="black",]');
             }
         }
 
