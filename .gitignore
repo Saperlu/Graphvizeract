@@ -12,4 +12,6 @@ api/.DS_Store
 
 api/ressources/
 
+api/api.log
+
 .DS_Store
