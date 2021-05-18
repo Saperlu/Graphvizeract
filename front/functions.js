@@ -1,4 +1,6 @@
 const API_URL = "http://dev-isi.utt.fr:3005";
+var allNodes;
+var allEdges
 
 //-------------------------------
 // Graph
@@ -302,7 +304,9 @@ function changeColorContour() {
 }
 
 function setupNodes() {
-    nodes = Array.from(document.getElementsByClassName("node"));
+    allNodes = document.getElementsByClassName("node");
+    nodes = Array.from(allNodes);
+
     nodes.forEach((node) => {
         node.onclick = () => {
             selectNode(node);
@@ -354,7 +358,8 @@ function removeEdge(edge) {
 }
 
 function setupEdges() {
-    edges = Array.from(document.getElementsByClassName("edge"));
+    allEdges = document.getElementsByClassName("edge");
+    edges = Array.from(allEdges);
     edges.forEach((edge) => {
         edge.oncontextmenu = removeEdge.bind(edge, edge);
         return false;
@@ -372,8 +377,7 @@ function getGDocLink(node) {
 }
 
 function copyNodeFileName() {
-    var chaine = "p" + selectedGraph.prefix + "n_" + formatNodeToFileName();
-    prompt("Nom formaté : ", chaine);
+    prompt("Nom formaté : ", formatNodeToFileName(selectedNode));
 }
 
 const alphabet = [
@@ -398,13 +402,52 @@ const alphabet = [
         "betterSymbol": "_"
     }
 ];
-    
 
-function formatNodeToFileName() {
-    var chaine = getNodeName(selectedNode);
-    chaine = chaine.toLowerCase();
+
+function formatNodeToFileName(node) {
+    var chaine = "p" + selectedGraph.prefix + "n_" + getNodeName(node).toLowerCase();
     alphabet.forEach((elem) => {
         chaine = chaine.replace(elem.regex, elem.betterSymbol);
     });
     return chaine;
+}
+
+function printJson() {
+    let json = 			
+        `\"${formatNodeToFileName(selectedNode)}\": {\n` +
+        `\"type\": \"text\",\n` +
+        `\"text\": \"${getNodeName(selectedNode)}\",\n` +
+        `\"choices\": [\n`
+    ;
+    // choices
+    nodeId = getNodeId(selectedNode);
+    Array.from(allEdges).forEach(edge => {
+        edgeTitle = edge.childNodes[1].textContent;
+        nodeEdgeId = edgeTitle.match(/^.+->/)[0].replace("->","");
+        if (nodeEdgeId === nodeId) {
+            const targetNodeId = edgeTitle.match(/->.+$/)[0].replace("->","");
+            for (const n of allNodes) {
+                if (getNodeId(n) === targetNodeId) {
+                    nName = getNodeName(n);
+                    json += 
+                        `\t{\n` +
+                        `\t\t"label": "${nName}",\n` +
+                        `\t\t"id": "${formatNodeToFileName(n)}"\n` +
+                        `\t},\n`
+                    ;
+                }
+            }
+        }
+    });
+
+    json+=
+        `\t]\n` +
+        `}`
+    ;
+
+    json = json.replace("},\n\t]", "}\n\t]");
+    jsonBox = document.getElementById("jsonBox")
+    jsonBox.textContent = json;
+    // jsonBox.focus();
+    jsonBox.select();
 }
