@@ -415,8 +415,7 @@ function formatNodeToFileName(node) {
 function printJson() {
     let json = 			
         `\"${formatNodeToFileName(selectedNode)}\": {\n` +
-        `\"type\": \"text\",\n` +
-        `\"text\": \"${getNodeName(selectedNode)}\",\n` +
+        `\"type\": \"video\",\n` +
         `\"choices\": [\n`
     ;
     // choices
